@@ -1,7 +1,6 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, memo } from "react";
 
-// Project data
 const projects = [
   {
     title: "FileDrive",
@@ -19,7 +18,6 @@ const projects = [
   },
 ];
 
-// Animation variants
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: (i) => ({
@@ -33,14 +31,14 @@ const cardVariants = {
   }),
 };
 
-// ProjectCard Component (like SkillItem)
-const ProjectCard = ({ project, index }) => {
+const ProjectCard = memo(({ project, index }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   useEffect(() => {
     if (isInView) {
-      console.log(`mounted ${project.title}`);
+      console.log(`Mounted: ${project.title}`);
+      alert(`Mounted: ${project.title}`); // iOS debugging
     }
   }, [isInView, project.title]);
 
@@ -57,7 +55,6 @@ const ProjectCard = ({ project, index }) => {
       <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
         {project.description}
       </p>
-
       <div className="flex flex-wrap gap-2 mb-4">
         {project.tech.map((tech, i) => (
           <span
@@ -68,7 +65,6 @@ const ProjectCard = ({ project, index }) => {
           </span>
         ))}
       </div>
-
       <div className="flex gap-4 mt-auto">
         {project.github && (
           <a
@@ -93,9 +89,9 @@ const ProjectCard = ({ project, index }) => {
       </div>
     </motion.div>
   );
-};
+});
 
-export default function Projects() {
+const Projects = () => {
   console.log("Projects component rendered");
 
   return (
@@ -110,7 +106,6 @@ export default function Projects() {
             Some things I’ve built recently
           </p>
         </div>
-
         <div className="grid sm:grid-cols-2 gap-8">
           {projects.map((project, index) => (
             <ProjectCard key={index} project={project} index={index} />
@@ -119,4 +114,6 @@ export default function Projects() {
       </div>
     </section>
   );
-}
+};
+
+export default memo(Projects);
