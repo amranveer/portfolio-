@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, memo } from "react";
+import { useEffect, useRef } from "react";
 
+// Your project data
 const projects = [
   {
     title: "FileDrive",
@@ -18,43 +19,43 @@ const projects = [
   },
 ];
 
-const cardVariants = {
+// Static fade animation
+const fadeIn = {
   hidden: { opacity: 0, y: 20 },
-  visible: (i) => ({
+  visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
+      duration: 0.5,
       ease: "easeInOut",
-      delay: i * 0.1,
     },
-  }),
+  },
 };
 
-const ProjectCard = memo(({ project, index }) => {
+const ProjectCard = ({ project, index }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   useEffect(() => {
     if (isInView) {
-      console.log(`Mounted: ${project.title}`);
-      alert(`Mounted: ${project.title}`); // iOS debugging
+      alert(`mounted: ${project.title}`);
     }
   }, [isInView, project.title]);
 
   return (
     <motion.div
       ref={ref}
-      custom={index}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      variants={cardVariants}
+      variants={fadeIn}
+      style={{ transitionDelay: `${index * 0.1}s` }}
       className="glass p-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/80 backdrop-blur shadow-sm hover:shadow-xl transition-all"
     >
       <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
       <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
         {project.description}
       </p>
+
       <div className="flex flex-wrap gap-2 mb-4">
         {project.tech.map((tech, i) => (
           <span
@@ -65,6 +66,7 @@ const ProjectCard = memo(({ project, index }) => {
           </span>
         ))}
       </div>
+
       <div className="flex gap-4 mt-auto">
         {project.github && (
           <a
@@ -89,11 +91,9 @@ const ProjectCard = memo(({ project, index }) => {
       </div>
     </motion.div>
   );
-});
+};
 
-const Projects = () => {
-  console.log("Projects component rendered");
-
+export default function Projects() {
   return (
     <section
       id="projects"
@@ -106,6 +106,7 @@ const Projects = () => {
             Some things I’ve built recently
           </p>
         </div>
+
         <div className="grid sm:grid-cols-2 gap-8">
           {projects.map((project, index) => (
             <ProjectCard key={index} project={project} index={index} />
@@ -114,6 +115,4 @@ const Projects = () => {
       </div>
     </section>
   );
-};
-
-export default memo(Projects);
+}
