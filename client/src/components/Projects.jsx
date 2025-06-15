@@ -1,7 +1,6 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, memo } from "react";
 
-// Project data
 const projects = [
   {
     title: "FileDrive",
@@ -19,7 +18,6 @@ const projects = [
   },
 ];
 
-// Animation
 const fadeItem = {
   hidden: { opacity: 0 },
   visible: (i = 0) => ({
@@ -32,18 +30,12 @@ const fadeItem = {
   }),
 };
 
-// Project card component
-const ProjectCard = ({ project, index }) => {
+// ✅ Memoized project card
+const ProjectCard = memo(({ project, index }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
-  // Alert when card mounts (once)
-  useEffect(() => {
-    alert(`🟢 Mounted: ${project.title}`);
-  }, []);
-
-  // Alert on every rerender
-  alert(`🔁 Rerender: ${project.title}`);
+  
 
   return (
     <motion.div
@@ -94,11 +86,10 @@ const ProjectCard = ({ project, index }) => {
       </div>
     </motion.div>
   );
-};
+});
 
-// Main Projects section
 export default function Projects() {
-  alert("📦 Projects component rendered");
+  
 
   return (
     <section id="projects" className="py-20 text-gray-900 dark:text-gray-100 transition-colors">
@@ -112,11 +103,7 @@ export default function Projects() {
 
         <div className="grid sm:grid-cols-2 gap-8">
           {projects.map((project, index) => (
-            <ProjectCard
-              key={project.title}
-              project={project}
-              index={index}
-            />
+            <ProjectCard key={project.title} project={project} index={index} />
           ))}
         </div>
       </div>
