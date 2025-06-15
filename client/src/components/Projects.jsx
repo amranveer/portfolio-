@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, memo } from "react";
+import { useRef } from "react";
 
+// Project data
 const projects = [
   {
     title: "FileDrive",
@@ -18,35 +19,33 @@ const projects = [
   },
 ];
 
-const fadeItem = {
+// Animation per index
+const itemVariants = {
   hidden: { opacity: 0 },
-  visible: (i = 0) => ({
+  visible: (i) => ({
     opacity: 1,
     transition: {
-      duration: 0.5,
+      duration: 0.6,
       ease: "easeInOut",
       delay: i * 0.05,
     },
   }),
 };
 
-// ✅ Memoized project card
-const ProjectCard = memo(({ project, index }) => {
+const ProjectCard = ({ project, index }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
-
-  
+  const isInView = useInView(ref, { once: false, amount: 0.3 });
 
   return (
     <motion.div
       ref={ref}
       custom={index}
+      variants={itemVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      variants={fadeItem}
-      className="glass p-6 min-h-[260px] rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-xl transition-all"
+      className="glass p-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/80 backdrop-blur shadow-sm hover:shadow-xl transition-all"
     >
-      <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+      <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{project.title}</h3>
       <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
         {project.description}
       </p>
@@ -86,27 +85,25 @@ const ProjectCard = memo(({ project, index }) => {
       </div>
     </motion.div>
   );
-});
+};
 
-export default function Projects() {
-  
-
+const Projects = () => {
   return (
-    <section id="projects" className="py-20 text-gray-900 dark:text-gray-100 transition-colors">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold">Projects</h2>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Some things I’ve built recently
-          </p>
-        </div>
+    <section id="projects" className="py-20 transition-colors">
+      <div className="text-center mb-12 px-4">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Projects</h2>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">
+          Some things I’ve built recently
+        </p>
+      </div>
 
-        <div className="grid sm:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.title} project={project} index={index} />
-          ))}
-        </div>
+      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6 px-4 sm:px-6 md:px-8">
+        {projects.map((project, index) => (
+          <ProjectCard key={index} project={project} index={index} />
+        ))}
       </div>
     </section>
   );
-}
+};
+
+export default Projects;
