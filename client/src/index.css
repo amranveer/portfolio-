@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enable Tailwind's class-based dark mode variant */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 🌤️ Light Theme: Soft gradient background */
+html {
+  @apply bg-gradient-to-br from-blue-50 via-white to-purple-100 text-gray-900 transition-colors duration-500;
+}
+
+/* 🌑 Dark Theme: Deep gradient for dark mode */
+html.dark {
+  @apply bg-gradient-to-br from-gray-900 via-gray-950 to-black text-gray-100;
+}
+
+/* 🔮 Glassmorphism base style for all glass sections */
+.glass {
+  @apply bg-white/10 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/10 rounded-xl shadow-lg;
+}
+.navbar {
+  @apply bg-white/10 dark:bg-white/5 backdrop-blur-md  shadow-lg;
+}
+
+.input {
+  @apply bg-white/10 dark:bg-white/1 backdrop-blur-md border border-gray-400/20 dark:border-white/10 rounded-xl ;
+}
