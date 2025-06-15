@@ -18,21 +18,23 @@ const projects = [
   },
 ];
 
-// Animate per index with delay
 const fadeItem = {
   hidden: { opacity: 0 },
   visible: (i = 0) => ({
     opacity: 1,
-   
     transition: {
       duration: 0.5,
       ease: "easeInOut",
-      delay: i * 0.05, // Noticeable delay per card
+      delay: i * 0.05,
     },
   }),
 };
 
 export default function Projects() {
+  // Create all refs in a single array
+  const refs = projects.map(() => useRef(null));
+  const inViews = refs.map((ref) => useInView(ref, { once: false, amount: 0.3 }));
+
   return (
     <section
       id="projects"
@@ -48,16 +50,13 @@ export default function Projects() {
 
         <div className="grid sm:grid-cols-2 gap-8">
           {projects.map((project, index) => {
-            const ref = useRef(null);
-            const isInView = useInView(ref, { once: false, amount: 0.3 });
-
             return (
               <motion.div
-                ref={ref}
+                ref={refs[index]}
                 key={index}
                 custom={index}
                 initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
+                animate={inViews[index] ? "visible" : "hidden"}
                 variants={fadeItem}
                 className="glass p-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/80 backdrop-blur shadow-sm hover:shadow-xl transition-all"
               >
