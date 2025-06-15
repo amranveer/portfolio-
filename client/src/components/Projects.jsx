@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 // Project data
 const projects = [
@@ -19,12 +19,11 @@ const projects = [
   },
 ];
 
-// Animation variants
+// Animation
 const fadeItem = {
-  hidden: { opacity: 0},
+  hidden: { opacity: 0 },
   visible: (i = 0) => ({
     opacity: 1,
-    
     transition: {
       duration: 0.5,
       ease: "easeInOut",
@@ -33,10 +32,18 @@ const fadeItem = {
   }),
 };
 
-// ProjectCard component
+// Project card component
 const ProjectCard = ({ project, index }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+  // Alert when card mounts (once)
+  useEffect(() => {
+    alert(`🟢 Mounted: ${project.title}`);
+  }, []);
+
+  // Alert on every rerender
+  alert(`🔁 Rerender: ${project.title}`);
 
   return (
     <motion.div
@@ -45,7 +52,7 @@ const ProjectCard = ({ project, index }) => {
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       variants={fadeItem}
-      className="glass p-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/80 backdrop-blur shadow-sm hover:shadow-xl transition-all will-change-opacity transform"
+      className="glass p-6 min-h-[260px] rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-xl transition-all"
     >
       <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
       <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
@@ -91,11 +98,10 @@ const ProjectCard = ({ project, index }) => {
 
 // Main Projects section
 export default function Projects() {
+  alert("📦 Projects component rendered");
+
   return (
-    <section
-      id="projects"
-      className="py-20 text-gray-900 dark:text-gray-100 transition-colors"
-    >
+    <section id="projects" className="py-20 text-gray-900 dark:text-gray-100 transition-colors">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold">Projects</h2>
@@ -106,7 +112,11 @@ export default function Projects() {
 
         <div className="grid sm:grid-cols-2 gap-8">
           {projects.map((project, index) => (
-            <ProjectCard key={index} project={project} index={index} />
+            <ProjectCard
+              key={project.title}
+              project={project}
+              index={index}
+            />
           ))}
         </div>
       </div>
