@@ -1,9 +1,7 @@
-import Header from './components/Header'
 import Hero from './components/Hero'
-// import Projects from './components/Projects'
+import Projects from './components/Projects'
 import Skills from './components/Skills'
 import Contact from './components/Contact'
-import Footer from './components/Footer'
 import Layout from './components/Layout'
 
 function App() {
@@ -11,7 +9,7 @@ function App() {
     <div className="">
       <Layout>
       <Hero />
-      {/* <Projects /> */}
+      <Projects />
       <Skills />
       <Contact />
       </Layout>
