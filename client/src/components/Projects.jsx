@@ -3,10 +3,10 @@ import { useRef, useEffect } from "react";
 
 // Animation variants
 const fadeVariant = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0},
   visible: {
     opacity: 1,
-    y: 0,
+   
     transition: {
       duration: 0.6,
       ease: "easeInOut",
@@ -19,11 +19,7 @@ const ProjectCard = ({ title, description, tech, github, live, delay }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
-  useEffect(() => {
-    if (isInView) {
-      alert(`mounted: ${title}`);
-    }
-  }, [isInView, title]);
+
 
   return (
     <motion.div
