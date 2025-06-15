@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
+// Project data
 const projects = [
   {
     title: "FileDrive",
@@ -18,10 +19,12 @@ const projects = [
   },
 ];
 
+// Animation variants
 const fadeItem = {
-  hidden: { opacity: 0 },
+  hidden: { opacity: 0},
   visible: (i = 0) => ({
     opacity: 1,
+    
     transition: {
       duration: 0.5,
       ease: "easeInOut",
@@ -30,11 +33,64 @@ const fadeItem = {
   }),
 };
 
-export default function Projects() {
-  // Create all refs in a single array
-  const refs = projects.map(() => useRef(null));
-  const inViews = refs.map((ref) => useInView(ref, { once: false, amount: 0.3 }));
+// ProjectCard component
+const ProjectCard = ({ project, index }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, amount: 0.3 });
 
+  return (
+    <motion.div
+      ref={ref}
+      custom={index}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={fadeItem}
+      className="glass p-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/80 backdrop-blur shadow-sm hover:shadow-xl transition-all will-change-opacity transform"
+    >
+      <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+      <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
+        {project.description}
+      </p>
+
+      <div className="flex flex-wrap gap-2 mb-4">
+        {project.tech.map((tech, i) => (
+          <span
+            key={i}
+            className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-full"
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+
+      <div className="flex gap-4 mt-auto">
+        {project.github && (
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-indigo-600 dark:text-indigo-400 hover:underline text-sm"
+          >
+            GitHub
+          </a>
+        )}
+        {project.live && (
+          <a
+            href={project.live}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-green-600 dark:text-green-400 hover:underline text-sm"
+          >
+            Live
+          </a>
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
+// Main Projects section
+export default function Projects() {
   return (
     <section
       id="projects"
@@ -49,58 +105,9 @@ export default function Projects() {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-8">
-          {projects.map((project, index) => {
-            return (
-              <motion.div
-                ref={refs[index]}
-                key={index}
-                custom={index}
-                initial="hidden"
-                animate={inViews[index] ? "visible" : "hidden"}
-                variants={fadeItem}
-                className="glass p-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/80 backdrop-blur shadow-sm hover:shadow-xl transition-all"
-              >
-                <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
-                  {project.description}
-                </p>
-
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tech.map((tech, i) => (
-                    <span
-                      key={i}
-                      className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-full"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex gap-4 mt-auto">
-                  {project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-indigo-600 dark:text-indigo-400 hover:underline text-sm"
-                    >
-                      GitHub
-                    </a>
-                  )}
-                  {project.live && (
-                    <a
-                      href={project.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-green-600 dark:text-green-400 hover:underline text-sm"
-                    >
-                      Live
-                    </a>
-                  )}
-                </div>
-              </motion.div>
-            );
-          })}
+          {projects.map((project, index) => (
+            <ProjectCard key={index} project={project} index={index} />
+          ))}
         </div>
       </div>
     </section>
