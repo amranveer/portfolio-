@@ -19,10 +19,10 @@ const projects = [
 ];
 
 const fadeIn = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0},
   visible: (i) => ({
     opacity: 1,
-    y: 0,
+    
     transition: { delay: i * 0.2, duration: 0.6, ease: "easeOut" },
   }),
 };
@@ -51,10 +51,12 @@ export default function Projects() {
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
                 variants={fadeIn}
-                className="rounded-xl border p-6 text-left bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition"
+                className="rounded-xl  p-6 text-left bg-white dark:bg-gray-800 shadow-md "
               >
                 <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">
                   {project.title}
+
+                  
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
                   {project.description}
