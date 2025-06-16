@@ -1,50 +1,28 @@
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { useRef, useEffect } from "react";
 
-// Animation config
-const fadeVariant = {
-  hidden: { opacity: 0 },
-  visible: (i) => ({
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: "easeInOut",
-      delay: i * 0.1,
-    },
-  }),
-};
-
-const ProjectCard = ({ title, description, tech, github, live, index }) => {
+// ProjectCard
+const ProjectCard = ({ title, description, tech, github, live }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
-
-  useEffect(() => {
-    if (isInView) {
-      alert(`Mounted: ${title}`);
-    }
-  }, [isInView, title]);
 
   return (
     <motion.div
       ref={ref}
-      custom={index}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      variants={fadeVariant}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, ease: "easeInOut" }}
       className="glass p-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/80 backdrop-blur shadow-sm hover:shadow-xl transition-all"
     >
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
       <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">{description}</p>
-      <div className="flex flex-wrap gap-2 mb-4">
-        {tech.map((t, i) => (
-          <span
-            key={i}
-            className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded-full"
-          >
-            {t}
-          </span>
-        ))}
-      </div>
+
+      {tech && (
+        <p className="text-xs text-gray-600 dark:text-gray-400 italic mb-4">
+          {tech}
+        </p>
+      )}
+
       <div className="flex gap-4 mt-auto">
         {github && (
           <a
@@ -71,6 +49,7 @@ const ProjectCard = ({ title, description, tech, github, live, index }) => {
   );
 };
 
+// Projects Section
 export default function Projects() {
   return (
     <section
@@ -87,18 +66,16 @@ export default function Projects() {
 
         <div className="grid sm:grid-cols-2 gap-8">
           <ProjectCard
-            index={0}
             title="FileDrive"
             description="A cloud file upload and sharing platform with authentication."
-            tech={["React", "Node.js", "MongoDB", "Tailwind"]}
+            tech="React · Node.js · MongoDB · Tailwind"
             github="https://github.com/yourusername/filedrive"
             live="https://filedrive.example.com"
           />
           <ProjectCard
-            index={1}
             title="Portfolio"
             description="My personal developer portfolio built with React and Tailwind."
-            tech={["React", "Tailwind", "Framer Motion"]}
+            tech="React · Tailwind · Framer Motion"
             github="https://github.com/yourusername/portfolio"
             live=""
           />
