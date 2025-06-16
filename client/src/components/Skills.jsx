@@ -28,7 +28,7 @@ const itemVariants = {
     transition: {
       duration: 0.6,
       ease: "easeInOut",
-      delay: i * 0.04,
+      delay: i*0.01 ,
     },
   }),
 };

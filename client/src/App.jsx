@@ -9,8 +9,8 @@ function App() {
     <div className="min h-screen overflow-scroll no-scrollbar">
       <Layout>
       <Hero />
-      <Skills />
       <Projects />
+      <Skills />
       <Contact />
       </Layout>
     </div>
