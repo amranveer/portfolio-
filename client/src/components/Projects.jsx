@@ -1,3 +1,11 @@
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
 export default function Projects() {
   const projects = [
     {
@@ -30,42 +38,51 @@ export default function Projects() {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <div
-              key={index}
-              className="glass p-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/80 backdrop-blur shadow-sm hover:shadow-xl transition-all"
-            >
-              <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-              <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
-                {project.description}
-              </p>
-              <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 italic">
-                {project.tech}
-              </p>
-              <div className="flex gap-4 mt-auto">
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-indigo-600 dark:text-indigo-400 hover:underline text-sm"
-                  >
-                    GitHub
-                  </a>
-                )}
-                {project.live && (
-                  <a
-                    href={project.live}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-green-600 dark:text-green-400 hover:underline text-sm"
-                  >
-                    Live
-                  </a>
-                )}
-              </div>
-            </div>
-          ))}
+          {projects.map((project, index) => {
+            const ref = useRef(null);
+            const isInView = useInView(ref, { once: false, amount: 0.2 });
+
+            return (
+              <motion.div
+                key={index}
+                ref={ref}
+                variants={cardVariants}
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                className="glass p-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/80 backdrop-blur shadow-sm hover:shadow-xl transition-all"
+              >
+                <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
+                  {project.description}
+                </p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 italic">
+                  {project.tech}
+                </p>
+                <div className="flex gap-4 mt-auto">
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-indigo-600 dark:text-indigo-400 hover:underline text-sm"
+                    >
+                      GitHub
+                    </a>
+                  )}
+                  {project.live && (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-green-600 dark:text-green-400 hover:underline text-sm"
+                    >
+                      Live
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
