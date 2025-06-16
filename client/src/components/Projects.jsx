@@ -36,14 +36,14 @@ export default function Projects() {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold">Projects</h2>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Some things I’ve built recently
+            Some things I've built recently
           </p>
         </div>
 
         <div className="grid sm:grid-cols-2 gap-8">
           {projects.map((project, index) => {
             const ref = useRef(null);
-            const isInView = useInView(ref, { once: false, amount: 0.3 });
+            const isInView = useInView(ref, { once: true, amount: 0.3 });
 
             return (
               <motion.div
@@ -53,6 +53,12 @@ export default function Projects() {
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
                 className="glass p-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/80 backdrop-blur shadow-sm transition-all"
+                style={{
+                  transform: 'translateZ(0)',
+                  WebkitBackfaceVisibility: 'hidden',
+                  WebkitPerspective: 1000,
+                  WebkitTransform: 'translate3d(0,0,0)',
+                }}
               >
                 <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
                 <p className="text-sm text-gray-700 dark:text-gray-300 mb-4">
