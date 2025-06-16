@@ -53,17 +53,9 @@ const fadeIn = {
   },
 };
 
-// --- ProjectCard Component ---
-// This component handles the rendering and individual animation logic for each project.
-// By separating this, each card manages its own `useRef` and `useInView` state independently,
-// preventing re-renders of other cards and eliminating flickering.
 function ProjectCard({ project }) {
   const ref = useRef(null); // Create a ref to attach to the motion.div
-  
-  // useInView hook:
-  // - `ref`: The element to observe
-  // - `once: true`: Ensures the animation plays only ONCE when it enters the viewport.
-  // - `amount: 0.3`: Triggers `isInView` when 30% of the element is visible.
+
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
@@ -72,12 +64,7 @@ function ProjectCard({ project }) {
       variants={fadeIn} // Apply the predefined animation variants
       initial="hidden" // Set initial state to "hidden"
       animate={isInView ? "visible" : "hidden"} // Animate to "visible" if in view, otherwise "hidden"
-      className="glass p-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/80 backdrop-blur shadow-sm transition-all flex flex-col h-full"
-      // Added `flex flex-col h-full` to ensure consistent card heights,
-      // and `flex-grow` on description, `mt-auto` on links for layout flexibility.
-
-      // These styles hint to the browser to use hardware acceleration,
-      // which can make animations smoother and prevent flickering.
+      className="glass p-6 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/80 flex flex-col h-full backdrop-blur shadow-sm"
       style={{
         transform: 'translateZ(0)', // Force 3D rendering context
         WebkitBackfaceVisibility: 'hidden', // Hide backface during transforms (for 3D)

@@ -29,3 +29,13 @@ html.dark {
 .input {
   @apply bg-white/10 dark:bg-white/1 backdrop-blur-md border border-gray-400/20 dark:border-white/10 rounded-xl ;
 }
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

@@ -6,7 +6,7 @@ import Layout from './components/Layout'
 
 function App() {
   return (
-    <div className="">
+    <div className="min h-screen overflow-scroll no-scrollbar">
       <Layout>
       <Hero />
       <Skills />
